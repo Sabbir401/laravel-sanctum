@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_configarations', function (Blueprint $table) {
+        Schema::create('order_lines', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('product_item_id');
-            $table->unsignedBigInteger('variation_option_id');
+            $table->unsignedBigInteger('order_id');
+            $table->integer('qty');
+            $table->double('price');
             $table->timestamps();
 
             $table->foreign('product_item_id')->references('id')->on('product_items')->onDelete('cascade');
-            $table->foreign('variation_option_id')->references('id')->on('variation_options')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('shop_orders')->onDelete('cascade');
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_configarations');
+        Schema::dropIfExists('order_lines');
     }
 };
