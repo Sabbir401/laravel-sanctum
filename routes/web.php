@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
-use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +21,6 @@ Route::get('/login', function () {
 
 Route::resource("brand", BrandController::class);
 
-Route::get('/register', [RegistrationController::class, 'index']);
+Route::get('/register', [SiteUserController::class, 'index']);
+Route::post('/register', [SiteUserController::class, 'store']);
+Route::get('/customer', [SiteUserController::class, 'show']);

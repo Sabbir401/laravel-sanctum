@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('site_users')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('user_payment_methods')->onDelete('cascade');
             $table->foreign('shipping_address_id')->references('id')->on('user_addresses')->onDelete('cascade');
-            $table->foreign('shipping_method_id')->references('id')->on('shopping_methods')->onDelete('cascade');
+            $table->foreign('shipping_method_id')->references('id')->on('shipping_methods')->onDelete('cascade');
             $table->foreign('order_status_id')->references('id')->on('order_statuses')->onDelete('cascade');
         });
     }
