@@ -18,33 +18,15 @@ class SiteUserController extends Controller
         // $data=country::get('country_name');
         // dd($data);
         $countries = country::all();
+        $url= url('/register');
+        $title = "User Registration";
+        $data = compact('url', 'title');
 
-        return view('registration', compact('countries'));
+        return view('registration', compact('countries'))->with($data);
     }
 
     public function register(Request $request)
     {
-
-        $request->validate(
-            [
-                'name' => 'required',
-                'email' => 'required',
-                'password' => 'required',
-                'confirm_password' => 'required',
-                'phone' => 'required',
-                'unit_number' => 'required',
-                'street_address' => 'required',
-                'city' => 'required',
-                'postal_code' => 'required',
-            ]
-            );
-
-
-        echo "<pre>";
-        print_r($request->all());
-        // $abc = "abcdef";
-
-
 
     }
 
@@ -109,23 +91,44 @@ class SiteUserController extends Controller
      */
     public function show(site_user $site_user)
     {
-        return view('customer');
+        $site_user = site_user::all();
+        $site_user = site_user::paginate(5);
+        $data = compact('site_user');
+        return view('user')->with($data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(site_user $site_user)
+    public function edit($id)
     {
-        //
+        $siteUserData = site_user::with('userAddress.address.findCountry')->find($id);
+        // Check if the SiteUser is found
+        if ($siteUserData) {
+            // $siteUserData contains the data from the site_user, user_address, and address tables
+            $countries = country::all();
+            $url = url('user/update').'/'.$id;
+            $title = 'Update Profile';
+            $data = compact('siteUserData','url', 'title', 'countries');
+            return view('registration')->with($data);
+        } else {
+            // Handle the case where the SiteUser is not found, for example, redirect to an error page or display a message.
+            return "Data Not Found";
+        }
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, site_user $site_user)
+    public function update(Request $request,  $id)
     {
-        //
+        $siteUserData = site_user::with('userAddress.address.findCountry')->find($id);
+
+        $siteUserData->userAddress->address->city = $request['city'];
+
+
+        return redirect('user');
     }
 
     /**
@@ -133,6 +136,29 @@ class SiteUserController extends Controller
      */
     public function destroy(site_user $site_user)
     {
-        //
+
+    }
+    public function delete($id)
+    {
+        $site_user = site_user::find($id);
+        if (!is_null($site_user)){
+            $site_user->delete();
+        }
+
+        return redirect('/user');
+    }
+
+
+    public function details($id)
+    {
+        $siteUserData = site_user::with('userAddress.address.findCountry')->find($id);
+        // Check if the SiteUser is found
+        if ($siteUserData) {
+            // Now $siteUserData contains the data from the site_user, user_address, and address tables
+            return view('userProfile', compact('siteUserData'));
+        } else {
+            // Handle the case where the SiteUser is not found, for example, redirect to an error page or display a message.
+            return "Data Not Found";
+        }
     }
 }

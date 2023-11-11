@@ -15,12 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('/', function () {
+    return view('');
 });
 
 Route::resource("brand", BrandController::class);
 
 Route::get('/register', [SiteUserController::class, 'index']);
 Route::post('/register', [SiteUserController::class, 'store']);
-Route::get('/customer', [SiteUserController::class, 'show']);
+Route::get('/user', [SiteUserController::class, 'show']);
+Route::get('user/delete/{id}', [SiteUserController::class, 'delete'])->name('site_user.delete');
+Route::get('user/details/{id}', [SiteUserController::class, 'details'])->name('site_user.details');
+Route::get('user/edit/{id}', [SiteUserController::class, 'edit'])->name('site_user.edit');
+Route::post('user/update/{id}', [SiteUserController::class, 'update'])->name('site_user.update');

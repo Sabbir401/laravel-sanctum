@@ -5,13 +5,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="{{ url('public/css.style.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
+    <!-- <link href="{{ url('/css/style.css') }}" rel="stylesheet"> -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
   <section class="h-100 bg-light">
-    <form action="{{url('/')}}/register" method="post">
+    <form action="{{ $url }}" method="post">
         @csrf
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -25,11 +26,11 @@
                     </div>
                     <div class="col-xl-6">
                     <div class="card-body p-md-5 text-black">
-                        <h3 class="mb-5 text-uppercase">Customer registration form</h3>
+                        <h2 class="mb-5 text-uppercase text-primary text-center">{{ $title }}</h2>
 
                         <div class="form-outline mb-2">
                             <label class="form-label" for="form3Example9">Name</label>
-                            <input type="text" name="name" id="form3Example9" class="form-control form-control-sm" />
+                            <input type="text" name="name" id="form3Example9" class="form-control form-control-sm" value="{{ $siteUserData->name }}"/>
                             <span class="text-danger">
                                 @error('name')
                                     {{$message}}
@@ -39,7 +40,7 @@
                         </div>
                         <div class="form-outline mb-2">
                             <label class="form-label" for="form3Example9">Email</label>
-                            <input type="email" name="email" id="form3Example9" class="form-control form-control-sm" />
+                            <input type="email" name="email" id="form3Example9" class="form-control form-control-sm" value="{{ $siteUserData->email }}"/>
                             <span class="text-danger">
                                 @error('email')
                                     {{$message}}
@@ -66,7 +67,7 @@
                         </div>
                         <div class="form-outline mb-2">
                             <label class="form-label" for="form3Example8">Phone Number</label>
-                            <input type="number" name="phone" id="form3Example8" class="form-control form-control-sm" />
+                            <input type="number" name="phone" id="form3Example8" class="form-control form-control-sm" value="{{ $siteUserData->Phone_number }}"/>
                             <span class="text-danger">
                                 @error('phone')
                                     {{$message}}
@@ -77,7 +78,7 @@
                             <div class="col-md-6 mb-2">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Example1m1">Unit/App. Number</label>
-                                    <input type="text" name="unit_number" id="form3Example1m1" class="form-control form-control-sm" />
+                                    <input type="text" name="unit_number" id="form3Example1m1" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->unit_number }}"/>
                             <span class="text-danger">
                                 @error('unit_number')
                                     {{$message}}
@@ -88,7 +89,7 @@
                             <div class="col-md-6 mb-2">
                                 <div class="form-outline">
                                     <label class="form-label"  for="form3Example1n1">Street Address</label>
-                                    <input type="text" name="street_address" id="form3Example1n1" class="form-control form-control-sm" />
+                                    <input type="text" name="street_address" id="form3Example1n1" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->street_number }}"/>
                             <span class="text-danger">
                                 @error('street_address')
                                     {{$message}}
@@ -100,18 +101,18 @@
 
                         <div class="form-outline mb-2">
                             <label class="form-label" for="form3Example8">Address Line-1</label>
-                            <input type="text" name="address_1" id="form3Example8" class="form-control form-control-sm" />
+                            <input type="text" name="address_1" id="form3Example8" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->address_line1 }}"/>
                         </div>
                         <div class="form-outline mb-2">
                             <label class="form-label" for="form3Example8">Address Line-2</label>
-                            <input type="text" name="address_2" id="form3Example8" class="form-control form-control-sm" />
+                            <input type="text" name="address_2" id="form3Example8" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->address_line2 }}"/>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Example1m1">City</label>
-                                    <input type="text" name="city" id="form3Example1m1" class="form-control form-control-sm" />
+                                    <input type="text" name="city" id="form3Example1m1" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->city }}"/>
                             <span class="text-danger">
                                 @error('city')
                                     {{$message}}
@@ -122,7 +123,7 @@
                             <div class="col-md-6 mb-2">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Example1n1">Region</label>
-                                    <input type="text" name="region" id="form3Example1n1" class="form-control form-control-sm" />
+                                    <input type="text" name="region" id="form3Example1n1" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->region }}"/>
                             <span class="text-danger">
                                 @error('region')
                                     {{$message}}
@@ -136,7 +137,7 @@
                             <div class="col-md-6 mb-2">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Example1n1">Postal_code</label>
-                                    <input type="text" name="postal_code" id="form3Example1n1" class="form-control form-control-sm" />
+                                    <input type="text" name="postal_code" id="form3Example1n1" class="form-control form-control-sm" value="{{ $siteUserData->userAddress->address->post_code }}"/>
                             <span class="text-danger">
                                 @error('postal_code')
                                     {{$message}}

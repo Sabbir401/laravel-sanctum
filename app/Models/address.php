@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class address extends Model
 {
     use HasFactory;
+    public function findCountry()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 }
