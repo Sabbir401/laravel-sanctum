@@ -110,7 +110,7 @@ class SiteUserController extends Controller
             $url = url('user/update').'/'.$id;
             $title = 'Update Profile';
             $data = compact('siteUserData','url', 'title', 'countries');
-            return view('registration')->with($data);
+            return view('userUpdate')->with($data);
         } else {
             // Handle the case where the SiteUser is not found, for example, redirect to an error page or display a message.
             return "Data Not Found";
@@ -123,10 +123,23 @@ class SiteUserController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        $siteUserData = site_user::with('userAddress.address.findCountry')->find($id);
+        $siteUserData = site_user::with('userAddress.address')->find($id);
 
-        $siteUserData->userAddress->address->city = $request['city'];
+        $siteUserData->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'Phone_number' => $request->input('phone'),
+        ]);
 
+        $siteUserData->userAddress->address->update([
+            'unit_number' => $request->input('unit_number'),
+            'street_number' => $request->input('street_address'),
+            'address_line1' => $request->input('address_1'),
+            'address_line2' => $request->input('address_2'),
+            'city' => $request->input('city'),
+            'region' => $request->input('region'),
+            'post_code' => $request->input('postal_code'),
+        ]);
 
         return redirect('user');
     }
