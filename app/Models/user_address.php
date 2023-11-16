@@ -13,10 +13,8 @@ class user_address extends Model
     protected $table = 'user_addresses';
 
     protected $fillable = [
-        'student_id',
-        'alternate_phone',
-        'course',
-        'roll_no'
+        'user_id',
+        'address_id'
     ];
     public function siteUser()
     {

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>User</title>
+    <title>User Trash</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -57,7 +57,7 @@
     <div class="container">
         <h1 style="text-align: center; color: green; font-size: 40px;">All Users</h1>
         <input type="text" name="" id="myInput" placeholder="Enter Name" onkeyup="searchFun()">
-        <a href="{{ url('user/trash') }}"><button class="btn btn-danger">Go to Trash</button></a>
+        <a href="{{ url('user') }}"><button class="btn btn-primary">User Information</button></a>
         <table style="width:97%; margin: 10px;" id="myTable">
             <tr>
                 <th>ID</th>
@@ -74,14 +74,11 @@
                     <td>{{ $user->Phone_number }}</td>
                     <td>
 
-                        <a href="{{ route('site_user.edit', ['id' => $user->id]) }}">
-                            <button class="btn btn-primary bt"> Edit</button>
-                        </a>
-                        <a href="{{ route('site_user.details', ['id' => $user->id]) }}">
-                            <button class="btn btn-success bt"> Details</button>
+                        <a href="{{ route('site_user.restore', ['id' => $user->id]) }}">
+                            <button class="btn btn-success bt"> Restore</button>
                         </a>
                         <a href="{{ route('site_user.delete', ['id' => $user->id]) }}">
-                            <button class="btn btn-danger bt">Trash</button>
+                            <button class="btn btn-danger bt">Delete</button>
                         </a>
 
                     </td>
