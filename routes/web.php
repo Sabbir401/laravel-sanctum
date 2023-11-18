@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/trash', function () {
-    return view('userTrash');
+Route::get('/product', function () {
+    return view('productSetup');
 });
 
 Route::resource("brand", BrandController::class);
@@ -30,3 +31,8 @@ Route::get('user/restore/{id}', [SiteUserController::class, 'restore'])->name('s
 Route::get('user/details/{id}', [SiteUserController::class, 'details'])->name('site_user.details');
 Route::get('user/edit/{id}', [SiteUserController::class, 'edit'])->name('site_user.edit');
 Route::post('user/update/{id}', [SiteUserController::class, 'update'])->name('site_user.update');
+
+Route::get('product/category', [ProductCategoryController::class, 'show']);
+Route::post('product/category', [ProductCategoryController::class, 'store'])->name('categories.store');
+Route::get('product/subcategory', [ProductCategoryController::class, 'display']);
+Route::post('product/subcategory', [ProductCategoryController::class, 'create'])->name('sub.create');

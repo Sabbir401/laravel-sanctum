@@ -86,7 +86,7 @@
             @endforeach
         </table>
         <div>
-            {{ $site_user->links() }}
+
         </div>
     </div>
 	<script type="text/javascript">

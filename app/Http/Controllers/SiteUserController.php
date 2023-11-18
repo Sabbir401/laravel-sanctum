@@ -7,6 +7,7 @@ use App\Models\country;
 use App\Models\site_user;
 use App\Models\user_address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class SiteUserController extends Controller
@@ -57,57 +58,45 @@ class SiteUserController extends Controller
                 'postal_code' => 'required',
             ]
         );
-        $siteUser = site_user::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'Phone_number' => $request->input('phone'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $address = address::create([
-            'unit_number' => $request->input('unit_number'),
-            'street_number' => $request->input('street_address'),
-            'address_line1' => $request->input('address_1'),
-            'address_line2' => $request->input('address_2'),
-            'city' => $request->input('city'),
-            'region' => $request->input('region'),
-            'post_code' => $request->input('postal_code'),
-            'country_id' => $request->input('country'),
-        ]);
-        // Create a new UserAddress
-        $userAddress = user_address::create([
-            'user_id' => $siteUser->id,
-            'address_id' => $address->id,
-        ]);
+            // Create a new SiteUser
+            $siteUser = site_user::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'Phone_number' => $request->input('phone'),
+                'password' => Hash::make($request->input('password')),
+            ]);
 
+            // Create a new Address
+            $address = address::create([
+                'unit_number' => $request->input('unit_number'),
+                'street_number' => $request->input('street_address'),
+                'address_line1' => $request->input('address_1'),
+                'address_line2' => $request->input('address_2'),
+                'city' => $request->input('city'),
+                'region' => $request->input('region'),
+                'post_code' => $request->input('postal_code'),
+                'country_id' => $request->input('country'),
+            ]);
 
-        // $siteUser = new site_user;
-        // $address = new address;
-        // $userAddress = new user_address;
+            // Create a new UserAddress
+            $userAddress = user_address::create([
+                'user_id' => $siteUser->id,
+                'address_id' => $address->id,
+            ]);
 
-        // $siteUser->name = $request['name'];
-        // $siteUser->email = $request['email'];
-        // $siteUser->Phone_number = $request['phone'];
-        // $siteUser->password = md5($request['passowrd']);
-        // $siteUser->save();
+            DB::commit();
 
-        // $siteUserId = $siteUser->getkey();
+            return redirect('register')->with('success', 'User information inserted successfully.');
+        } catch (\Exception $e) {
+            DB::rollback();
 
-        // $address->unit_number = $request['unit_number'];
-        // $address->street_number	 = $request['street_address'];
-        // $address->address_line1 = $request['address_1'];
-        // $address->address_line2 = $request['address_2'];
-        // $address->city = $request['city'];
-        // $address->region = $request['region'];
-        // $address->post_code = $request['postal_code'];
-        // $address->country_id = $request['country'];
-        // $address->save();
+            // Handle the error as needed
+            return redirect('register')->with('error', 'An error occurred while inserting user information.');
+        }
 
-        // $addressId = $address->getkey();
-
-        // $userAddress->user_id = $siteUserId;
-        // $userAddress->address_id = $addressId;
-        // $userAddress->save();
     }
 
     /**
@@ -124,7 +113,6 @@ class SiteUserController extends Controller
     public function trash()
     {
         $site_user = site_user::with('userAddress.address')->onlyTrashed()->get();
-        $site_user = site_user::with('userAddress.address')->paginate(5);
         $data = compact('site_user');
         return view('userTrash')->with($data);
 
@@ -186,26 +174,47 @@ class SiteUserController extends Controller
     }
     public function delete($id)
     {
-        $site_user = site_user::find($id);
-        if (!is_null($site_user)){
-            $site_user->delete();
-            $site_user->userAddress->delete();
-            $site_user->userAddress->address->delete();
-        }
 
-        return redirect('/user');
+        try {
+            DB::beginTransaction();
+            $site_user = site_user::with('userAddress.address')->find($id);
+            if (!is_null($site_user)){
+                $site_user->delete();
+                $site_user->userAddress->delete();
+                $site_user->userAddress->address->delete();
+            }
+            DB::commit();
+
+            return redirect('user')->with('Successfully Deleted');
+
+        }catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect('user')->with('error', 'An error occurred while inserting user information.');
+        }
     }
 
     public function restore($id)
     {
-        $site_user = site_user::find($id);
-        if (!is_null($site_user)){
-            $site_user->restore();
-            $site_user->userAddress->restore();
-            $site_user->userAddress->address->restore();
+        try {
+            DB::beginTransaction();
+            $site_user = site_user::with('userAddress.address')->withTrashed()->find($id);
+            if (!is_null($site_user)){
+                $site_user->restore();
+                $site_user->userAddress->restore();
+                $site_user->userAddress->address->restore();
+                dd($site_user);
+        }
+        DB::commit();
+
+        return redirect('user')->with('Successfully Resotred');
+
+        }catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect('user')->with('error', 'An error occurred while inserting user information.');
         }
 
-        return redirect('/user');
     }
 
     public function details($id)
