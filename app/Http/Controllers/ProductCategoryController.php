@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\product_category;
 use Illuminate\Http\Request;
+use App\Models\product_category;
+use Illuminate\Support\Facades\DB;
 
 class ProductCategoryController extends Controller
 {
@@ -12,7 +13,22 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        return view('category');
+        // $Categories = product_category::all();
+        // $subCategory = product_category::all();
+        // $data = compact('Categories', 'subCategory');
+        // return view('productSetup')->with($data);
+    }
+
+    public function getSubCategory(Request $request)
+    {
+        // $categoryId = $request->input('category_id');
+        // $subCategories = DB::table('product_categories')
+        //     ->select('id', 'category_name')
+        //     ->where('parent_category_id', $categoryId)
+        //     ->get();
+
+        // return response()->json($subCategories);
+
     }
 
     /**
@@ -30,10 +46,11 @@ class ProductCategoryController extends Controller
 
     public function display()
     {
-        $Categories = product_category::all();
-        // $product_category = product_category::whereNotNull('parent_category_id')->paginate(10);
-        // $data = compact('product_category', 'category');
-        // return view('subCategory')->with($data);
+        // $Categories = product_category::all();
+        $Categories = DB::table('product_categories')
+        ->select('id', 'category_name')
+        ->whereNull('parent_category_id')
+        ->get();
 
         $productCategories = product_category::select(
             'product_categories.id as id',
@@ -45,7 +62,7 @@ class ProductCategoryController extends Controller
             ->orderBy('parent.category_name', 'asc')
             ->paginate(10);
 
-        $data = compact('productCategories','Categories');
+        $data = compact('productCategories', 'Categories');
         return view('subCategory')->with($data);
     }
 

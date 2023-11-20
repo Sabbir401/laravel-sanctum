@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/product', function () {
+Route::get('/', function () {
     return view('productSetup');
 });
 
@@ -32,7 +33,15 @@ Route::get('user/details/{id}', [SiteUserController::class, 'details'])->name('s
 Route::get('user/edit/{id}', [SiteUserController::class, 'edit'])->name('site_user.edit');
 Route::post('user/update/{id}', [SiteUserController::class, 'update'])->name('site_user.update');
 
+
+Route::get('product', [ProductController::class, 'index']);
+Route::post('product', [ProductController::class, 'getSubCategory'])->name('getSubCategory');
+Route::post('product/subcategory', [ProductController::class, 'create'])->name('sub.create');
+// Route::post('product', [ProductController::class, 'create'])->name('product.create');
+
 Route::get('product/category', [ProductCategoryController::class, 'show']);
 Route::post('product/category', [ProductCategoryController::class, 'store'])->name('categories.store');
 Route::get('product/subcategory', [ProductCategoryController::class, 'display']);
-Route::post('product/subcategory', [ProductCategoryController::class, 'create'])->name('sub.create');
+
+
+

@@ -49,8 +49,8 @@ class SiteUserController extends Controller
             [
                 'name' => 'required',
                 'email' => 'required',
-                'password' => 'required',
-                'confirm_password' => 'required',
+                'password' => 'required|min:6',
+                'confirm_password' => 'required|same:password',
                 'phone' => 'required',
                 'unit_number' => 'required',
                 'street_address' => 'required',
