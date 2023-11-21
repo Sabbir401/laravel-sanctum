@@ -7,6 +7,8 @@ use App\Models\product_item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isNull;
+
 class ProductController extends Controller
 {
     /**
@@ -41,40 +43,9 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
-        try {
-            DB::beginTransaction();
-
-            // Create a new preduct
-            $product = product::create([
-                'category_id' => $request->input('subcategory_id'),
-                'name' => $request->input('name'),
-                'Description' => $request->input('Description'),
-                'name' => $request->input('name'),
-            ]);
-
-            // Create a new item
-            $productItem = product_item::create([
-                'price' => $request->input('price'),
-
-            ]);
-
-            $categoryId = $request->input('category_id');
-            $subCategories = DB::table('product_categories')
-                ->select('id', 'category_name')
-                ->where('parent_category_id', $categoryId)
-                ->get();
-
-            DB::commit();
-
-            return view('productSetup')->with(['subCategory' => $subCategories, 'success' => 'Product information inserted successfully.']);
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            // Handle the error as needed
-            return redirect('product')->with('error', 'An error occurred while inserting user information.');
-        }
+        //
     }
 
     /**
@@ -82,9 +53,72 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->input('reqInfo') == "submit") {
+            try {
+                DB::beginTransaction();
+
+                // Create a new preduct
+                $product = product::create([
+                    'category_id' => $request->input('subcategory_id'),
+                    'name' => $request->input('name'),
+                    'Description' => $request->input('Description'),
+                ]);
+
+                // Create a new item
+                $productItem = product_item::create([
+                    'price' => $request->input('price'),
+
+                ]);
+
+                DB::commit();
+
+                return view('productSetup')->with('Successfull');
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                // Handle the error as needed
+                return redirect('product')->with('error', 'An error occurred while inserting user information.');
+            }
+        } else {
+            $categoryId = $request->input('category_id');
+            $subCategories = DB::table('product_categories')
+                ->select('id', 'category_name')
+                ->where('parent_category_id', $categoryId)
+                ->get();
+
+            return response()->json($subCategories);
+        }
     }
 
+    public function asubmit(Request $request){
+        // try {
+        //     DB::beginTransaction();
+
+            // Create a new preduct
+            $product = product::create([
+                'category_id' => $request->input('subcategory_id'),
+                'name' => $request->input('name'),
+                'Description' => $request->input('Description'),
+                'product_image' => $request->input('product_image'),
+            ]);
+
+            // Create a new item
+            // $productItem = product_item::create([
+            //     'price' => $request->input('price'),
+
+            // ]);
+            // return redirect('product/subcategory');
+
+        //     DB::commit();
+
+        //     return view('productSetup')->with('Successfull');
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+
+        //     // Handle the error as needed
+        //     return redirect('product')->with('error', 'An error occurred while inserting user information.');
+        // }
+    }
     /**
      * Display the specified resource.
      */

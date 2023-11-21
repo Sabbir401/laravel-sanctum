@@ -13,8 +13,15 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        // $Categories = product_category::all();
-        // $subCategory = product_category::all();
+        // $Categories = DB::table('product_categories')
+        //     ->select('id', 'category_name')
+        //     ->whereNull('parent_category_id')
+        //     ->get();
+        // $subCategory = DB::table('product_categories')
+        //     ->select('id', 'category_name')
+        //     ->whereNotNull('parent_category_id')
+        //     ->get();
+
         // $data = compact('Categories', 'subCategory');
         // return view('productSetup')->with($data);
     }

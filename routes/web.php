@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('productSetup');
+    return view('admin');
 });
 
 Route::resource("brand", BrandController::class);
@@ -36,12 +36,12 @@ Route::post('user/update/{id}', [SiteUserController::class, 'update'])->name('si
 
 Route::get('product', [ProductController::class, 'index']);
 Route::post('product', [ProductController::class, 'getSubCategory'])->name('getSubCategory');
-Route::post('product/subcategory', [ProductController::class, 'create'])->name('sub.create');
-// Route::post('product', [ProductController::class, 'create'])->name('product.create');
+Route::post('product/submit', [ProductController::class, 'asubmit'])->name('product.submit');
 
 Route::get('product/category', [ProductCategoryController::class, 'show']);
 Route::post('product/category', [ProductCategoryController::class, 'store'])->name('categories.store');
 Route::get('product/subcategory', [ProductCategoryController::class, 'display']);
+Route::post('product/subcategory', [ProductCategoryController::class, 'create'])->name('sub.create');
 
 
 

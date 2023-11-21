@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
     <!-- <link href="{{ url('/css/style.css') }}" rel="stylesheet"> -->
-    <!-- include libraries(jQuery, bootstrap) -->
 
     <!-- include libraries(jQuery, bootstrap) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -19,6 +18,16 @@
             selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
             plugins: 'powerpaste advcode table lists checklist',
             toolbar: 'undo redo | blocks| bold italic | bullist numlist checklist | code | table'
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("input").focus(function() {
+                $(this).css("background-color", '##ccf1ff');
+            });
+            $("input").blur(function() {
+                $(this).css("background-color", "#ccf1ff");
+            });
         });
     </script>
 
@@ -47,7 +56,7 @@
 
 <body>
     <section class="h-100 bg-light">
-        <form action="" method="post">
+        <form id="form" action="{{ route('product.submit') }}" method="post">
             @csrf
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -95,7 +104,7 @@
                                                             url: '/product', // Replace with the actual route
                                                             method: 'POST',
                                                             data: {
-                                                                category_id: selectedCategoryId
+                                                                category_id: selectedCategoryId,
                                                             },
                                                             headers: {
                                                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -138,7 +147,7 @@
                                 </div>
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="form3Example8">Image</label>
-                                    <input type="file" name="img" id="form3Example8" class="form-control form-control-sm" />
+                                    <input type="file" name="product_image" id="form3Example8" class="form-control form-control-sm" />
                                     <span class="text-danger">
                                         @error('phone')
                                         {{$message}}
@@ -149,8 +158,34 @@
 
                                 <div class="d-flex justify-content-end pt-3">
                                     <button type="reset" class="btn btn-danger btn-lg m-3">Reset all</button>
-                                    <button type="submit" class="btn btn-warning btn-lg m-3">Submit</button>
+                                    <button id="submit" class="btn btn-warning btn-lg m-3">Submit</button>
                                 </div>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        $("#form").submit(function(e) {
+
+                                            //prevent Default functionality
+                                            e.preventDefault();
+
+                                            //get the action-url of the form
+                                            var actionurl = e.currentTarget.action;
+
+                                            //do your own request an handle the results
+                                            $.ajax({
+                                                url: actionurl,
+                                                type: 'post',
+                                                dataType: 'application/json',
+                                                data: $("#form").serialize(),
+                                                success: function(data) {
+                                                    alert('submitted');
+                                                }
+                                            });
+
+                                        });
+
+                                    });
+                                </script>
 
                             </div>
                         </div>
