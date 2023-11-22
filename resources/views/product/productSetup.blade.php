@@ -145,14 +145,30 @@
                                     <input type="number" name="price" id="form3Example9" class="form-control form-control-sm" />
 
                                 </div>
-                                <div class="form-outline mb-2">
-                                    <label class="form-label" for="form3Example8">Image</label>
-                                    <input type="file" name="product_image" id="form3Example8" class="form-control form-control-sm" />
-                                    <span class="text-danger">
-                                        @error('phone')
-                                        {{$message}}
-                                        @enderror
-                                    </span>
+                                <label class="form-label" for="form3Example8">Image</label>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline mb-2">
+                                            <input type="file" name="image_1" id="form3Example8" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline mb-2">
+                                            <input type="file" name="image_2" id="form3Example8" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline mb-2">
+                                            <input type="file" name="image_3" id="form3Example8" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline mb-2">
+                                            <input type="file" name="image_4" id="form3Example8" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
                                 </div>
 
 

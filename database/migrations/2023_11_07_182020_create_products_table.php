@@ -16,7 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger("category_id");
             $table->string('name',30);
             $table->string('Description',500);
-            $table->string('product_image',100)->nullable();
+            $table->string('product_image_1',100)->nullable();
+            $table->string('product_image_2',100)->nullable();
+            $table->string('product_image_3',100)->nullable();
+            $table->string('product_image_4',100)->nullable();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');

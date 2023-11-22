@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\variation_option;
 use Illuminate\Http\Request;
+use App\Models\variation_option;
+use Illuminate\Support\Facades\DB;
 
 class VariationOptionController extends Controller
 {
@@ -12,7 +13,17 @@ class VariationOptionController extends Controller
      */
     public function index()
     {
-        //
+        $variations = DB::table('variations')
+            ->select('id', 'name')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $variation_option = variation_option::select('variation_options.id', 'variation_options.value', 'variations.name')
+            ->join('variations', 'variation_options.variation_id', '=', 'variations.id')
+            ->paginate(10);
+
+        $data = compact('variations', 'variation_option');
+        return view('product/variationOption')->with($data);
     }
 
     /**

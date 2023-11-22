@@ -26,7 +26,7 @@ class ProductController extends Controller
             ->get();
 
         $data = compact('Categories', 'subCategory');
-        return view('productSetup')->with($data);
+        return view('/product/productSetup')->with($data);
     }
 
     public function getSubCategory(Request $request)
@@ -72,12 +72,12 @@ class ProductController extends Controller
 
                 DB::commit();
 
-                return view('productSetup')->with('Successfull');
+                return view('/product/productSetup')->with('Successfull');
             } catch (\Exception $e) {
                 DB::rollback();
 
                 // Handle the error as needed
-                return redirect('product')->with('error', 'An error occurred while inserting user information.');
+                return redirect('/product')->with('error', 'An error occurred while inserting user information.');
             }
         } else {
             $categoryId = $request->input('category_id');

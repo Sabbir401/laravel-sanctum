@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('variation_options', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("variation_id");
-            $table->integer('value');
+            $table->string('value',50);
             $table->timestamps();
 
             $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');

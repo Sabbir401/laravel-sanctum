@@ -4,6 +4,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteUserController;
+use App\Http\Controllers\VariationController;
+use App\Http\Controllers\VariationOptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,4 +46,9 @@ Route::get('product/subcategory', [ProductCategoryController::class, 'display'])
 Route::post('product/subcategory', [ProductCategoryController::class, 'create'])->name('sub.create');
 
 
+Route::get('product/variation', [VariationController::class, 'index']);
+Route::post('product/variation', [VariationController::class, 'store'])->name('variation.store');
+
+Route::get('product/variationOption', [VariationOptionController::class, 'index']);
+Route::post('product/variationOption', [VariationOptionController::class, 'store'])->name('variationOption.store');
 

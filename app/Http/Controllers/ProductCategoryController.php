@@ -48,7 +48,7 @@ class ProductCategoryController extends Controller
         $productCategory = product_category::create([
             'category_name' => $request->input('name'),
         ]);
-        return redirect('product/category');
+        return redirect('/product/category');
     }
 
     public function display()
@@ -70,7 +70,7 @@ class ProductCategoryController extends Controller
             ->paginate(10);
 
         $data = compact('productCategories', 'Categories');
-        return view('subCategory')->with($data);
+        return view('/product/subCategory')->with($data);
     }
 
     public function create(Request $request)
@@ -79,7 +79,7 @@ class ProductCategoryController extends Controller
             'category_name' => $request->input('name'),
             'parent_category_id' => $request->input('category_id')
         ]);
-        return redirect('product/subcategory');
+        return redirect('/product/subcategory');
     }
 
     /**
@@ -89,7 +89,7 @@ class ProductCategoryController extends Controller
     {
         $product_category = product_category::whereNull('parent_category_id')->paginate(10);
         $data = compact('product_category');
-        return view('category')->with($data);
+        return view('/product/category')->with($data);
     }
 
     /**

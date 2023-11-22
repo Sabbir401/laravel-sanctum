@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\variation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VariationController extends Controller
 {
@@ -12,7 +13,18 @@ class VariationController extends Controller
      */
     public function index()
     {
-        //
+        $Categories = DB::table('product_categories')
+            ->select('id', 'category_name')
+            ->whereNull('parent_category_id')
+            ->orderBy('category_name', 'asc')
+            ->get();
+
+        $variations = Variation::select('variations.id', 'variations.name', 'product_categories.category_name')
+            ->join('product_categories', 'variations.category_id', '=', 'product_categories.id', 'inner')
+            ->paginate(10);
+
+        $data = compact('Categories','variations');
+        return view('/product/variation')->with($data);
     }
 
     /**
@@ -28,7 +40,20 @@ class VariationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $productVariation = variation::create([
+                'category_id' => $request->input('category_id'),
+                'name' => $request->input('name'),
+            ]);
+            DB::commit();
+
+            return redirect('/product/variation')->with('Successfully Deleted');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect('/product/variation')->with('error', 'An error occurred while inserting user information.');
+        }
     }
 
     /**

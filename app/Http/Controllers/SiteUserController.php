@@ -24,7 +24,7 @@ class SiteUserController extends Controller
         $title = "User Registration";
         $data = compact('url', 'title');
 
-        return view('registration', compact('countries'))->with($data);
+        return view('/user/registration', compact('countries'))->with($data);
     }
 
     public function register(Request $request)
@@ -107,14 +107,14 @@ class SiteUserController extends Controller
         $site_user = site_user::all();
         $site_user = site_user::paginate(5);
         $data = compact('site_user');
-        return view('user')->with($data);
+        return view('/user/user')->with($data);
     }
 
     public function trash()
     {
         $site_user = site_user::with('userAddress.address')->onlyTrashed()->get();
         $data = compact('site_user');
-        return view('userTrash')->with($data);
+        return view('/user/userTrash')->with($data);
 
     }
 
@@ -131,7 +131,7 @@ class SiteUserController extends Controller
             $url = url('user/update').'/'.$id;
             $title = 'Update Profile';
             $data = compact('siteUserData','url', 'title', 'countries');
-            return view('userUpdate')->with($data);
+            return view('/user/userUpdate')->with($data);
         } else {
             // Handle the case where the SiteUser is not found, for example, redirect to an error page or display a message.
             return "Data Not Found";
@@ -162,7 +162,7 @@ class SiteUserController extends Controller
             'post_code' => $request->input('postal_code'),
         ]);
 
-        return redirect('user');
+        return redirect('/user');
     }
 
     /**
@@ -185,12 +185,12 @@ class SiteUserController extends Controller
             }
             DB::commit();
 
-            return redirect('user')->with('Successfully Deleted');
+            return redirect('/user')->with('Successfully Deleted');
 
         }catch (\Exception $e) {
             DB::rollback();
 
-            return redirect('user')->with('error', 'An error occurred while inserting user information.');
+            return redirect('/user')->with('error', 'An error occurred while inserting user information.');
         }
     }
 
@@ -207,12 +207,12 @@ class SiteUserController extends Controller
         }
         DB::commit();
 
-        return redirect('user')->with('Successfully Resotred');
+        return redirect('/user')->with('Successfully Resotred');
 
         }catch (\Exception $e) {
             DB::rollback();
 
-            return redirect('user')->with('error', 'An error occurred while inserting user information.');
+            return redirect('/user')->with('error', 'An error occurred while inserting user information.');
         }
 
     }
@@ -223,7 +223,7 @@ class SiteUserController extends Controller
         // Check if the SiteUser is found
         if ($siteUserData) {
             // Now $siteUserData contains the data from the site_user, user_address, and address tables
-            return view('userProfile', compact('siteUserData'));
+            return view('/user/userProfile', compact('siteUserData'));
         } else {
             // Handle the case where the SiteUser is not found, for example, redirect to an error page or display a message.
             return "Data Not Found";

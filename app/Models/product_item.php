@@ -17,4 +17,9 @@ class product_item extends Model
     {
         return $this->belongsTo(product::class, 'product_id');
     }
+
+    public function productConfigur()
+    {
+        return $this->hasOne(product_configaration::class, 'product_item_id');
+    }
 }
