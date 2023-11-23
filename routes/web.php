@@ -38,7 +38,8 @@ Route::post('user/update/{id}', [SiteUserController::class, 'update'])->name('si
 
 Route::get('product', [ProductController::class, 'index']);
 Route::post('product', [ProductController::class, 'getSubCategory'])->name('getSubCategory');
-Route::post('product/submit', [ProductController::class, 'asubmit'])->name('product.submit');
+Route::post('product/var', [ProductController::class, 'getvariation'])->name('getVariation');
+Route::post('product/submit', [ProductController::class, 'store'])->name('product.submit');
 
 Route::get('product/category', [ProductCategoryController::class, 'show']);
 Route::post('product/category', [ProductCategoryController::class, 'store'])->name('categories.store');

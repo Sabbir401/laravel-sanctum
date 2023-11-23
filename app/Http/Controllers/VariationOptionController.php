@@ -39,7 +39,22 @@ class VariationOptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        try {
+            DB::beginTransaction();
+            $productVariation = variation_option::create([
+                'variation_id' => $request->variation_id,
+                'value' => $request->value,
+            ]);
+            DB::commit();
+
+            return redirect('/product/variationOption')->with('Successfully Created');
+        } catch (\Exception $e) {
+            DB::rollback();
+dd($e);
+            return redirect('/product/variationOption')->with('error', 'An error occurred while inserting user information.');
+        }
     }
 
     /**

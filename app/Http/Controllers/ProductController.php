@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\product;
+use App\Models\product_configaration;
 use App\Models\product_item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,11 @@ class ProductController extends Controller
             ->select('id', 'name')
             ->get();
 
-        $data = compact('Categories', 'subCategory', 'variation');
+        $variationOption = DB::table('variation_options')
+            ->select('id', 'value')
+            ->get();
+
+        $data = compact('Categories', 'subCategory', 'variation', 'variationOption');
         return view('/product/productSetup')->with($data);
     }
 
@@ -55,6 +60,17 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
+    public function getvariation(Request $request)
+    {
+        $variationId = $request->input('variation_id');
+        $variationOption = DB::table('variation_options')
+            ->select('id', 'value')
+            ->where('variation_id', $variationId)
+            ->get();
+
+        return response()->json($variationOption);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -68,40 +84,37 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->input('reqInfo') == "submit") {
-            try {
-                DB::beginTransaction();
+        // dd($request);
+        try {
+            DB::beginTransaction();
+            // Create a new preduct
+            $product = product::create([
+                'category_id' => $request->input('subcategory_id'),
+                'name' => $request->input('name'),
+                'Description' => $request->input('Description'),
+                // 'product_image' => $request->input('product_image'),
+            ]);
 
-                // Create a new preduct
-                $product = product::create([
-                    'category_id' => $request->input('subcategory_id'),
-                    'name' => $request->input('name'),
-                    'Description' => $request->input('Description'),
-                ]);
+            $productItem = product_item::create([
+                'product_id' => $product->id,
+                'SKU' => $request->input('sku_name'),
+                'qty_in_stock' => $request->input('qtn'),
+                'price' => $request->input('price'),
+            ]);
+            $productconfigaration = product_configaration::create([
+                'product_item_id' => $productItem->id,
+                'variation_option_id' => $request->input('variationOption')
+            ]);
 
-                // Create a new item
-                $productItem = product_item::create([
-                    'price' => $request->input('price'),
+            DB::commit();
 
-                ]);
+            return response()->json(['message' => 'Product Successfully Inserted']);
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                DB::commit();
+            // Handle the error as needed
+            return response()->json(['message' => 'Something Went Wrong']);
 
-                return view('/product/productSetup')->with('Successfull');
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                // Handle the error as needed
-                return redirect('/product')->with('error', 'An error occurred while inserting user information.');
-            }
-        } else {
-            $categoryId = $request->input('category_id');
-            $subCategories = DB::table('product_categories')
-                ->select('id', 'category_name')
-                ->where('parent_category_id', $categoryId)
-                ->get();
-
-            return response()->json($subCategories);
         }
     }
 

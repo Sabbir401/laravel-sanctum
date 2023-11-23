@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="form3Example9">SKU Name</label>
-                                    <input type="text" name="name" id="form3Example9" class="form-control form-control-sm" />
+                                    <input type="text" name="sku_name" id="form3Example9" class="form-control form-control-sm" />
                                     <span class="text-danger">
                                         @error('name')
                                         {{$message}}
@@ -164,17 +164,50 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('#variation').on('change', function() {
+                                                    // Get the selected category_id
+                                                    var selectedVariationId = $(this).val();
 
+                                                    // Check if a category is selected
+                                                    if (selectedVariationId) {
+                                                        // Send the category_id to the controller using AJAX
+                                                        $.ajax({
+                                                            url: '/product/var', // Replace with the actual route
+                                                            method: 'POST',
+                                                            data: {
+                                                                variation_id: selectedVariationId,
+                                                            },
+                                                            headers: {
+                                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                            },
+                                                            success: function(response) {
+                                                                $('#variationOption').empty();
+
+                                                                $.each(response, function(index, variationOption) {
+                                                                    $('#variationOption').append('<option value="' + variationOption.id + '">' + variationOption.value + '</option>');
+                                                                });
+                                                            },
+                                                            error: function(error) {
+                                                                // Handle errors if any
+                                                                console.error('Error:', error);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                     </div>
 
 
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline">
                                             <label class="form-label" for="form3Example1n1">Variation Option Name</label><br>
-                                            <select name="subcategory_id" id="subcategory" class="p-1">
+                                            <select name="variationOption" id="variationOption" class="p-1">
                                                 <option selected disabled>--Select--</option>
-                                                @foreach($subCategory as $sub)
-                                                <option value="{{ $sub->id }}">{{ $sub->category_name }}</option>
+                                                @foreach($variationOption as $var)
+                                                <option value="{{ $var->id }}">{{ $var->value }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -183,8 +216,13 @@
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="form3Example9">Price</label>
                                     <input type="number" name="price" id="form3Example9" class="form-control form-control-sm" />
-
                                 </div>
+
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="form3Example9">Stock Quantity</label>
+                                    <input type="number" name="qtn" id="form3Example9" class="form-control form-control-sm" />
+                                </div>
+
                                 <label class="form-label" for="form3Example8">Image</label>
                                 <div class="row">
                                     <div class="col-md-6 mb-2">
@@ -214,27 +252,44 @@
 
                                 <div class="d-flex justify-content-end pt-3">
                                     <button type="reset" class="btn btn-danger btn-lg m-3">Reset all</button>
-                                    <button id="submit" class="btn btn-warning btn-lg m-3">Submit</button>
+                                    <button type="submit" id="submit" class="btn btn-warning btn-lg m-3">Submit</button>
                                 </div>
 
                                 <script>
                                     $(document).ready(function() {
                                         $("#form").submit(function(e) {
-
                                             //prevent Default functionality
                                             e.preventDefault();
 
                                             //get the action-url of the form
                                             var actionurl = e.currentTarget.action;
+                                            console.log('avb');
 
                                             //do your own request an handle the results
+                                            // $.ajax({
+                                            //     url: actionurl,
+                                            //     type: 'post',
+                                            //     dataType: 'application/json',
+                                            //     data: $("#form").serialize(),
+                                            //     success: function(response) {
+                                            //         alert(response.message);
+                                            //     },
+                                            //     error: function(error) {
+                                            //         alert('error.responseJSON.message');
+                                            //     }
+                                            // });
+
+
                                             $.ajax({
-                                                url: actionurl,
-                                                type: 'post',
-                                                dataType: 'application/json',
+                                                url: actionurl, // Replace with the actual route
+                                                method: 'POST',
                                                 data: $("#form").serialize(),
-                                                success: function(data) {
-                                                    alert('submitted');
+                                                success: function(response) {
+                                                    alert(response.message);
+                                                    $("#form")[0].reset();
+                                                },
+                                                error: function(error) {
+                                                    alert(error.responseJSON.message);
                                                 }
                                             });
 

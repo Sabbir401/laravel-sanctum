@@ -13,6 +13,7 @@
 
 <body>
     <section class="h-100 bg-light">
+
         <form action="{{ route('variationOption.store') }}" method="post">
             @csrf
             <div class="container py-5 h-100">
@@ -25,7 +26,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <label class="form-label" for="form3Example1n1">Variation Name</label><br>
-                                            <select name="category_id" id="category" class="p-1">
+                                            <select name="variation_id" id="category" class="p-1">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($variations as $var)
                                                 <option value="{{ $var->id }}">{{ $var->name }}</option>
@@ -35,7 +36,7 @@
                                         <div class="col-md-2"></div>
                                         <div class="col-md-4 mb-2">
                                             <label class="form-label" for="form3Example1n1">Variation Option Name</label><br>
-                                            <input type="text" name="name" id="form3Example9" class="form-control form-control-sm" />
+                                            <input type="text" name="value" id="form3Example9" class="form-control form-control-sm" />
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-start pt-3">
