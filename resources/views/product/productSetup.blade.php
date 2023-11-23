@@ -71,7 +71,15 @@
                                         @error('name')
                                         {{$message}}
                                         @enderror
-
+                                    </span>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="form3Example9">SKU Name</label>
+                                    <input type="text" name="name" id="form3Example9" class="form-control form-control-sm" />
+                                    <span class="text-danger">
+                                        @error('name')
+                                        {{$message}}
+                                        @enderror
                                     </span>
                                 </div>
                                 <div class="form-outline mb-2">
@@ -111,10 +119,14 @@
                                                             },
                                                             success: function(response) {
                                                                 $('#subcategory').empty();
+                                                                $('#variation').empty();
 
-                                                                // Append new options based on the response
-                                                                $.each(response, function(index, subCategory) {
+                                                                // Append new options based on the response.subCategory
+                                                                $.each(response.subCategory, function(index, subCategory) {
                                                                     $('#subcategory').append('<option value="' + subCategory.id + '">' + subCategory.category_name + '</option>');
+                                                                });
+                                                                $.each(response.variation, function(index, variation) {
+                                                                    $('#variation').append('<option value="' + variation.id + '">' + variation.name + '</option>');
                                                                 });
                                                             },
                                                             error: function(error) {
@@ -131,6 +143,34 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline">
                                             <label class="form-label" for="form3Example1n1">Sub Category Name</label><br>
+                                            <select name="subcategory_id" id="subcategory" class="p-1">
+                                                <option selected disabled>--Select--</option>
+                                                @foreach($subCategory as $sub)
+                                                <option value="{{ $sub->id }}">{{ $sub->category_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline">
+                                            <label class="form-label" for="form3Example1n1">Varitation Name</label><br>
+                                            <select name="variation_id" id="variation" class="p-1">
+                                                <option selected disabled>--Select--</option>
+                                                @foreach($variation as $var)
+                                                <option value="{{ $var->id }}">{{ $var->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline">
+                                            <label class="form-label" for="form3Example1n1">Variation Option Name</label><br>
                                             <select name="subcategory_id" id="subcategory" class="p-1">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($subCategory as $sub)

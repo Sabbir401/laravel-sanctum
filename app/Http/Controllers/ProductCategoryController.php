@@ -57,6 +57,7 @@ class ProductCategoryController extends Controller
         $Categories = DB::table('product_categories')
         ->select('id', 'category_name')
         ->whereNull('parent_category_id')
+        ->orderBy('category_name','asc')
         ->get();
 
         $productCategories = product_category::select(

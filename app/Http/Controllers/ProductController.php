@@ -19,13 +19,19 @@ class ProductController extends Controller
         $Categories = DB::table('product_categories')
             ->select('id', 'category_name')
             ->whereNull('parent_category_id')
+            ->orderBy('category_name', 'asc')
             ->get();
+
         $subCategory = DB::table('product_categories')
             ->select('id', 'category_name')
             ->whereNotNull('parent_category_id')
             ->get();
 
-        $data = compact('Categories', 'subCategory');
+        $variation = DB::table('variations')
+            ->select('id', 'name')
+            ->get();
+
+        $data = compact('Categories', 'subCategory', 'variation');
         return view('/product/productSetup')->with($data);
     }
 
@@ -37,7 +43,16 @@ class ProductController extends Controller
             ->where('parent_category_id', $categoryId)
             ->get();
 
-        return response()->json($subCategories);
+        $variation = DB::table('variations')
+            ->select('id', 'name')
+            ->where('category_id', $categoryId)
+            ->get();
+
+        $data = [
+            'subCategory' => $subCategories,
+            'variation' => $variation,
+        ];
+        return response()->json($data);
     }
 
     /**
@@ -90,24 +105,25 @@ class ProductController extends Controller
         }
     }
 
-    public function asubmit(Request $request){
+    public function asubmit(Request $request)
+    {
         // try {
         //     DB::beginTransaction();
 
-            // Create a new preduct
-            $product = product::create([
-                'category_id' => $request->input('subcategory_id'),
-                'name' => $request->input('name'),
-                'Description' => $request->input('Description'),
-                'product_image' => $request->input('product_image'),
-            ]);
+        // Create a new preduct
+        $product = product::create([
+            'category_id' => $request->input('subcategory_id'),
+            'name' => $request->input('name'),
+            'Description' => $request->input('Description'),
+            'product_image' => $request->input('product_image'),
+        ]);
 
-            // Create a new item
-            // $productItem = product_item::create([
-            //     'price' => $request->input('price'),
+        // Create a new item
+        // $productItem = product_item::create([
+        //     'price' => $request->input('price'),
 
-            // ]);
-            // return redirect('product/subcategory');
+        // ]);
+        // return redirect('product/subcategory');
 
         //     DB::commit();
 
