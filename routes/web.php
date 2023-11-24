@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('admin');
+    return view('/frontend/tables');
 });
 
 Route::resource("brand", BrandController::class);

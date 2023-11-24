@@ -1,3 +1,7 @@
+@extends('frontend.layouts.main')
+
+@section('main-container')
+
 <!doctype html>
 <html lang="en">
 
@@ -43,33 +47,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Category Name</th>
+                                        <th>Sub Category Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $startIndex = ($productCategories->currentPage() - 1) * $productCategories->perPage() + 1;
+                                    @endphp
+                                    @foreach ($productCategories as $product)
+                                    <tr>
+                                        <td>{{ $startIndex++ }}</td>
+                                        <td>{{ $product->category }}</td>
+                                        <td>{{ $product->subcategory }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{ $productCategories->links() }}
                         </div>
                     </div>
                 </div>
             </div>
+
         </form>
-        <table class="table table-striped table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Category Name</th>
-                    <th>Sub Category Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                $startIndex = ($productCategories->currentPage() - 1) * $productCategories->perPage() + 1;
-                @endphp
-                @foreach ($productCategories as $product)
-                <tr>
-                    <td>{{ $startIndex++ }}</td>
-                    <td>{{ $product->category }}</td>
-                    <td>{{ $product->subcategory }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $productCategories->links() }}
+
     </section>
 
 
@@ -81,3 +87,5 @@
 </body>
 
 </html>
+
+@endsection

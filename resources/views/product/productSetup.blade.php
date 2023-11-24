@@ -1,3 +1,7 @@
+@extends('frontend.layouts.main')
+
+@section('main-container')
+
 <!doctype html>
 <html lang="en">
 
@@ -325,3 +329,5 @@
 </body>
 
 </html>
+
+@endsection
