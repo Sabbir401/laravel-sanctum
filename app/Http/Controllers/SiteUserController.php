@@ -20,7 +20,7 @@ class SiteUserController extends Controller
         // $data=country::get('country_name');
         // dd($data);
         $countries = country::all();
-        $url= url('/register');
+        $url = url('/register');
         $title = "User Registration";
         $data = compact('url', 'title');
 
@@ -29,7 +29,6 @@ class SiteUserController extends Controller
 
     public function register(Request $request)
     {
-
     }
 
     /**
@@ -96,7 +95,6 @@ class SiteUserController extends Controller
             // Handle the error as needed
             return redirect('register')->with('error', 'An error occurred while inserting user information.');
         }
-
     }
 
     /**
@@ -107,15 +105,14 @@ class SiteUserController extends Controller
         $site_user = site_user::all();
         $site_user = site_user::paginate(5);
         $data = compact('site_user');
-        return view('/user/user')->with($data);
+        return view('user/user')->with($data);
     }
 
     public function trash()
     {
         $site_user = site_user::with('userAddress.address')->onlyTrashed()->get();
         $data = compact('site_user');
-        return view('/user/userTrash')->with($data);
-
+        return view('/user/user')->with($data);
     }
 
     /**
@@ -128,15 +125,14 @@ class SiteUserController extends Controller
         if ($siteUserData) {
             // $siteUserData contains the data from the site_user, user_address, and address tables
             $countries = country::all();
-            $url = url('user/update').'/'.$id;
+            $url = url('user/update') . '/' . $id;
             $title = 'Update Profile';
-            $data = compact('siteUserData','url', 'title', 'countries');
+            $data = compact('siteUserData', 'url', 'title', 'countries');
             return view('/user/userUpdate')->with($data);
         } else {
             // Handle the case where the SiteUser is not found, for example, redirect to an error page or display a message.
             return "Data Not Found";
         }
-
     }
 
     /**
@@ -170,7 +166,6 @@ class SiteUserController extends Controller
      */
     public function destroy(site_user $site_user)
     {
-
     }
     public function delete($id)
     {
@@ -178,16 +173,24 @@ class SiteUserController extends Controller
         try {
             DB::beginTransaction();
             $site_user = site_user::with('userAddress.address')->find($id);
-            if (!is_null($site_user)){
+
+            if (!is_null($site_user)) {
                 $site_user->delete();
-                $site_user->userAddress->delete();
-                $site_user->userAddress->address->delete();
+
+                // Check if userAddress relationship exists
+                if (!is_null($site_user->userAddress)) {
+                    $site_user->userAddress->delete();
+
+                    // Check if address relationship exists
+                    if (!is_null($site_user->userAddress->address)) {
+                        $site_user->userAddress->address->delete();
+                    }
+                }
             }
             DB::commit();
 
             return redirect('/user')->with('Successfully Deleted');
-
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             return redirect('/user')->with('error', 'An error occurred while inserting user information.');
@@ -199,22 +202,26 @@ class SiteUserController extends Controller
         try {
             DB::beginTransaction();
             $site_user = site_user::with('userAddress.address')->withTrashed()->find($id);
-            if (!is_null($site_user)){
+
+            if (!is_null($site_user)) {
                 $site_user->restore();
-                $site_user->userAddress->restore();
-                $site_user->userAddress->address->restore();
-                dd($site_user);
-        }
-        DB::commit();
 
-        return redirect('/user')->with('Successfully Resotred');
+                if (!is_null($site_user->userAddress)) {
+                    $site_user->userAddress->restore();
 
-        }catch (\Exception $e) {
+                    if (!is_null($site_user->userAddress->address)) {
+                        $site_user->userAddress->address->restore();
+                    }
+                }
+            }
+            DB::commit();
+
+            return redirect('/user/trash')->with('Successfully Resotred');
+        } catch (\Exception $e) {
             DB::rollback();
 
-            return redirect('/user')->with('error', 'An error occurred while inserting user information.');
+            return redirect('/user/trash')->with('error', 'An error occurred while inserting user information.');
         }
-
     }
 
     public function details($id)
