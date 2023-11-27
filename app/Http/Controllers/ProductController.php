@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\product;
-use App\Models\product_configaration;
 use App\Models\product_item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\product_configaration;
 
 use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -88,11 +89,14 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             // Create a new preduct
+
+            // $fileName = time().'.'.$request->file('image_1').'pdf';
+            // Storage::disk('local')->put('/'.$fileName, $request->file('image_1'));
+
             $product = product::create([
                 'category_id' => $request->input('subcategory_id'),
                 'name' => $request->input('name'),
                 'Description' => $request->input('Description'),
-                // 'product_image' => $request->input('product_image'),
             ]);
 
             $productItem = product_item::create([
@@ -114,7 +118,6 @@ class ProductController extends Controller
 
             // Handle the error as needed
             return response()->json(['message' => 'Something Went Wrong']);
-
         }
     }
 
@@ -151,9 +154,16 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(product $product)
+    public function show()
     {
-        //
+        $product = product::with('category', 'category.variations')->get()->toArray();
+
+        dd($product);
+        if ($product) {
+            return view('/frontend/tables', compact('category'));
+        } else {
+            return "Data Not Found";
+        }
     }
 
     /**

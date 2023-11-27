@@ -92,7 +92,16 @@
                                         <a class="nav-link" href="{{url('/product/variationOption')}}">Variation Option Setup</a>
                                     </nav>
                                 </div>
-                                <a class="nav-link" href="{{url('/product')}}">Product</a>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#productdropdown" aria-expanded="false" aria-controls="pagesCollapseError">
+                                    Product
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="productdropdown" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{url('/product')}}">Product Entry</a>
+                                        <a class="nav-link" href="{{url('/productAll')}}">Product Information</a>
+                                    </nav>
+                                </div>
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Addons</div>

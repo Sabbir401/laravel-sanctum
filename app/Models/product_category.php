@@ -14,19 +14,18 @@ class product_category extends Model
         'parent_category_id',
     ];
 
-    public function product()
+    public function products()
     {
         return $this->hasMany(product::class, 'category_id');
     }
-
     // Relationship with Variation model
     public function variations()
     {
-        return $this->hasMany(variation::class, 'category_id');
+        return $this->hasMany(Variation::class, 'category_id');
     }
 
     // Relationship with PromotionCategory model
-    public function promotionCategories()
+    public function promotionCategory()
     {
         return $this->hasMany(promotion_category::class, 'category_id');
     }

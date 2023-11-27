@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\product;
 use Illuminate\Http\Request;
 use App\Models\product_category;
 use Illuminate\Support\Facades\DB;
@@ -13,17 +14,14 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        // $Categories = DB::table('product_categories')
-        //     ->select('id', 'category_name')
-        //     ->whereNull('parent_category_id')
-        //     ->get();
-        // $subCategory = DB::table('product_categories')
-        //     ->select('id', 'category_name')
-        //     ->whereNotNull('parent_category_id')
-        //     ->get();
+        $product = product::with('category', 'category.variations')->get()->toArray();
 
-        // $data = compact('Categories', 'subCategory');
-        // return view('productSetup')->with($data);
+        dd($product);
+        if ($product) {
+            return view('/frontend/tables', compact('category'));
+        } else {
+            return "Data Not Found";
+        }
     }
 
     public function getSubCategory(Request $request)

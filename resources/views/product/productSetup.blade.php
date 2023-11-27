@@ -60,7 +60,7 @@
 
 <body>
     <section class="h-100 bg-light">
-        <form id="form" action="{{ route('product.submit') }}" method="post">
+        <form id="form" action="{{ route('product.submit') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -268,21 +268,6 @@
                                             //get the action-url of the form
                                             var actionurl = e.currentTarget.action;
                                             console.log('avb');
-
-                                            //do your own request an handle the results
-                                            // $.ajax({
-                                            //     url: actionurl,
-                                            //     type: 'post',
-                                            //     dataType: 'application/json',
-                                            //     data: $("#form").serialize(),
-                                            //     success: function(response) {
-                                            //         alert(response.message);
-                                            //     },
-                                            //     error: function(error) {
-                                            //         alert('error.responseJSON.message');
-                                            //     }
-                                            // });
-
 
                                             $.ajax({
                                                 url: actionurl, // Replace with the actual route

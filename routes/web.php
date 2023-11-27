@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/user');
 });
 
 Route::resource("brand", BrandController::class);
@@ -40,6 +40,7 @@ Route::get('product', [ProductController::class, 'index']);
 Route::post('product', [ProductController::class, 'getSubCategory'])->name('getSubCategory');
 Route::post('product/var', [ProductController::class, 'getvariation'])->name('getVariation');
 Route::post('product/submit', [ProductController::class, 'store'])->name('product.submit');
+Route::get('productAll', [ProductController::class, 'show']);
 
 Route::get('product/category', [ProductCategoryController::class, 'show']);
 Route::post('product/category', [ProductCategoryController::class, 'store'])->name('categories.store');

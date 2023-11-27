@@ -24,29 +24,33 @@
                 <table id="datatablesSimple">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Operation</th>
+                            <th>SKU</th>
+                            <th>Category</th>
+                            <th>Sub Category</th>
+                            <th>Variation</th>
+                            <th>Variation Option</th>
+                            <th>Price</th>
+                            <th>Stock</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Operation</th>
+                            <th>SKU</th>
+                            <th>Category</th>
+                            <th>Sub Category</th>
+                            <th>Variation</th>
+                            <th>Variation Option</th>
+                            <th>Price</th>
+                            <th>Stock</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach ($site_user as $user)
+                        @foreach ($products as $product)
                         <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->Phone_number }}</td>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->productItem->SKU }}</td>
                             <td>
                                 <a href="{{ route('site_user.restore', ['id' => $user->id]) }}" class="text-decoration-none">
                                     <button class="btn btn-success px-2 py-0 mx-2"> Restore</button>
