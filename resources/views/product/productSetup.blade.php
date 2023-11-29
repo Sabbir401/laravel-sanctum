@@ -236,19 +236,19 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline mb-2">
-                                            <input type="file" name="image_2" id="form3Example8" class="form-control form-control-sm" />
+                                            <input type="file" name="image_2" id="form3Example" class="form-control form-control-sm" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline mb-2">
-                                            <input type="file" name="image_3" id="form3Example8" class="form-control form-control-sm" />
+                                            <input type="file" name="image_3" id="form3Example" class="form-control form-control-sm" />
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline mb-2">
-                                            <input type="file" name="image_4" id="form3Example8" class="form-control form-control-sm" />
+                                            <input type="file" name="image_4" id="form3Example" class="form-control form-control-sm" />
                                         </div>
                                     </div>
                                 </div>
@@ -258,35 +258,13 @@
                                     <button type="reset" class="btn btn-danger btn-lg m-3">Reset all</button>
                                     <button type="submit" id="submit" class="btn btn-warning btn-lg m-3">Submit</button>
                                 </div>
-
                                 <script>
                                     $(document).ready(function() {
-                                        $("#form").submit(function(e) {
-                                            //prevent Default functionality
-                                            e.preventDefault();
-
-                                            //get the action-url of the form
-                                            var actionurl = e.currentTarget.action;
-                                            console.log('avb');
-
-                                            $.ajax({
-                                                url: actionurl, // Replace with the actual route
-                                                method: 'POST',
-                                                data: $("#form").serialize(),
-                                                success: function(response) {
-                                                    alert(response.message);
-                                                    $("#form")[0].reset();
-                                                },
-                                                error: function(error) {
-                                                    alert(error.responseJSON.message);
-                                                }
-                                            });
-
+                                        $("#submit").click(function() {
+                                            $("#form").submit(); // Submit the form
                                         });
-
                                     });
                                 </script>
-
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/user');
+    return view('/product/productDetails');
 });
 
 Route::resource("brand", BrandController::class);

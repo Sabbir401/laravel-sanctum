@@ -6,7 +6,7 @@
         <h1 class="mt-4"></h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Users</li>
+            <li class="breadcrumb-item active">Products</li>
         </ol>
         <div class="card mb-4">
             <div class="card-header">
@@ -24,6 +24,7 @@
                             <th>Variation</th>
                             <th>Price</th>
                             <th>Stock</th>
+                            <th>picture</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -35,6 +36,7 @@
                             <th>Variation</th>
                             <th>Price</th>
                             <th>Stock</th>
+                            <th>picture</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -47,7 +49,7 @@
                             <td>{{ $product->productItems->productConfigur->variationOption->value }}</td>
                             <td>{{ $product->productItems->price }}</td>
                             <td>{{ $product->productItems->qty_in_stock }}</td>
-
+                            <td><img src="{{ $product->product_image_1 }}" alt="Image" height="70px" width="70px"></td>
 
                         </tr>
                         @endforeach

@@ -39,6 +39,6 @@ class product_category extends Model
     // Relationship with itself for child-parent relationships
     public function childCategories()
     {
-        return $this->hasMany(product_category::class, 'parent_category_id');
+        return $this->hasOne(product_category::class, 'parent_category_id');
     }
 }

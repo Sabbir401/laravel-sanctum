@@ -11243,3 +11243,6 @@ body {
 }
 
 
+#datatablesSimple td{
+    vertical-align: middle;
+}

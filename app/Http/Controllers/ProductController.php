@@ -7,9 +7,10 @@ use App\Models\product_item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\product_configaration;
+use Illuminate\Support\Facades\Storage;
 
 use function PHPUnit\Framework\isNull;
-use Illuminate\Support\Facades\Storage;
+
 
 class ProductController extends Controller
 {
@@ -85,18 +86,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         try {
             DB::beginTransaction();
-            // Create a new preduct
+            $file = $request->file('image_1');
+            if ($file !== null) {
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                $request->file('image_1')->storeAs('public/image/', $fileName, 'local');
+            }else{
+                return response()->json(['message' => 'Something Went Wrong']);
+            }
 
-            // $fileName = time().'.'.$request->file('image_1').'pdf';
-            // Storage::disk('local')->put('/'.$fileName, $request->file('image_1'));
 
             $product = product::create([
                 'category_id' => $request->input('subcategory_id'),
                 'name' => $request->input('name'),
                 'Description' => $request->input('Description'),
+                'product_image_1' => 'storage/image/'.$fileName,
             ]);
 
             $productItem = product_item::create([
@@ -112,7 +117,8 @@ class ProductController extends Controller
 
             DB::commit();
 
-            return response()->json(['message' => 'Product Successfully Inserted']);
+            // return response()->json(['message' => 'Product Successfully Inserted']);
+            return redirect('/product');
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -156,11 +162,10 @@ class ProductController extends Controller
      */
     public function show()
     {
-        $product = product::with('category', 'category.variations')->get()->toArray();
+        $products = product::with('category', 'category.parentCategory', 'productItems', 'productItems.productConfigur.variationOption', 'productItems.productConfigur.variationOption.variation')->get();
 
-        dd($product);
-        if ($product) {
-            return view('/frontend/tables', compact('category'));
+        if ($products) {
+            return view('/product/productInfo', compact('products'));
         } else {
             return "Data Not Found";
         }
