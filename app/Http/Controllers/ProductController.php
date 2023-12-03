@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\country;
 use App\Models\product;
+use App\Models\product_category;
 use App\Models\product_item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +40,9 @@ class ProductController extends Controller
             ->select('id', 'value')
             ->get();
 
-        $data = compact('Categories', 'subCategory', 'variation', 'variationOption');
+        $countries = country::all();
+
+        $data = compact('Categories', 'subCategory', 'variation', 'variationOption', 'countries');
         return view('/product/productSetup')->with($data);
     }
 
@@ -84,24 +88,36 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
     public function store(Request $request)
     {
         try {
             DB::beginTransaction();
-            $file = $request->file('image_1');
-            if ($file !== null) {
-                $fileName = time() . '.' . $file->getClientOriginalExtension();
-                $request->file('image_1')->storeAs('public/image/', $fileName, 'local');
-            }else{
-                return response()->json(['message' => 'Something Went Wrong']);
-            }
 
+            $uploadedImagePaths = [];
+
+            for ($i = 1; $i <= 4; $i++) {
+                $imageKey = 'image_' . $i;
+                $file = $request->file($imageKey);
+
+                if ($file !== null) {
+                    $fileName = time() . '_' . $imageKey . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('public/image/', $fileName, 'local');
+                    $uploadedImagePaths[$imageKey] = 'storage/image/' . $fileName;
+                }
+            }
 
             $product = product::create([
                 'category_id' => $request->input('subcategory_id'),
                 'name' => $request->input('name'),
                 'Description' => $request->input('Description'),
-                'product_image_1' => 'storage/image/'.$fileName,
+                'product_code' => $request->input('product_code'),
+                'origin' => $request->input('country'),
+                'product_image_1' => $uploadedImagePaths['image_1'] ?? null,
+                'product_image_2' => $uploadedImagePaths['image_2'] ?? null,
+                'product_image_3' => $uploadedImagePaths['image_3'] ?? null,
+                'product_image_4' => $uploadedImagePaths['image_4'] ?? null,
             ]);
 
             $productItem = product_item::create([
@@ -110,22 +126,62 @@ class ProductController extends Controller
                 'qty_in_stock' => $request->input('qtn'),
                 'price' => $request->input('price'),
             ]);
+
             $productconfigaration = product_configaration::create([
                 'product_item_id' => $productItem->id,
-                'variation_option_id' => $request->input('variationOption')
+                'variation_option_id' => $request->input('variationOption'),
             ]);
 
             DB::commit();
 
-            // return response()->json(['message' => 'Product Successfully Inserted']);
             return redirect('/product');
         } catch (\Exception $e) {
             DB::rollback();
-
-            // Handle the error as needed
             return response()->json(['message' => 'Something Went Wrong']);
         }
     }
+
+    public function display()
+    {
+        $products = product::with('productItems',)->get();
+        $Categories = DB::table('product_categories')
+            ->select('id', 'category_name')
+            ->whereNull('parent_category_id')
+            ->orderBy('category_name', 'asc')
+            ->get();
+
+        if ($products) {
+            return view('/product/products', compact('products','Categories'));
+        } else {
+            return "Data Not Found";
+        }
+    }
+
+
+    public function details($id)
+    {
+        $product = product::with('category', 'category.parentCategory', 'country', 'productItems', 'productItems.productConfigur.variationOption', 'productItems.productConfigur.variationOption.variation')->find($id);
+
+        if ($product) {
+            return view('product/test', compact('product'));
+        } else {
+            return "Data Not Found";
+        }
+    }
+
+    public function single($id)
+    {
+        $product = product::with('category', 'category.parentCategory', 'country', 'productItems', 'productItems.productConfigur.variationOption', 'productItems.productConfigur.variationOption.variation')->find($id);
+
+        if ($product) {
+            return view('product/productDetails', compact('product'));
+        } else {
+            return "Data Not Found";
+        }
+    }
+
+
+
 
     public function asubmit(Request $request)
     {
@@ -140,32 +196,22 @@ class ProductController extends Controller
             'product_image' => $request->input('product_image'),
         ]);
 
-        // Create a new item
-        // $productItem = product_item::create([
-        //     'price' => $request->input('price'),
 
-        // ]);
-        // return redirect('product/subcategory');
-
-        //     DB::commit();
-
-        //     return view('productSetup')->with('Successfull');
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-
-        //     // Handle the error as needed
-        //     return redirect('product')->with('error', 'An error occurred while inserting user information.');
-        // }
     }
     /**
      * Display the specified resource.
      */
     public function show()
     {
-        $products = product::with('category', 'category.parentCategory', 'productItems', 'productItems.productConfigur.variationOption', 'productItems.productConfigur.variationOption.variation')->get();
+        $products = product::with('category', 'category.parentCategory', 'country', 'productItems', 'productItems.productConfigur.variationOption', 'productItems.productConfigur.variationOption.variation')->get();
+        $Categories = DB::table('product_categories')
+            ->select('id', 'category_name')
+            ->whereNull('parent_category_id')
+            ->orderBy('category_name', 'asc')
+            ->get();
 
         if ($products) {
-            return view('/product/productInfo', compact('products'));
+            return view('/product/productInfo', compact('products','Categories'));
         } else {
             return "Data Not Found";
         }

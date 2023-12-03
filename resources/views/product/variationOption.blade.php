@@ -30,7 +30,7 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <label class="form-label" for="form3Example1n1">Variation Name</label><br>
-                                            <select name="variation_id" id="category" class="p-1">
+                                            <select name="variation_id" id="category" class="form-select">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($variations as $var)
                                                 <option value="{{ $var->id }}">{{ $var->name }}</option>

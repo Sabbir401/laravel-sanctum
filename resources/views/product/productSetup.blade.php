@@ -86,6 +86,26 @@
                                         @enderror
                                     </span>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline">
+                                            <label class="form-label" for="form3Example1n1">Product Code</label><br>
+                                            <input type="text" name="product_code" id="form3Example9" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <div class="form-outline">
+                                            <label class="form-label" for="form3Example1n1">Country of Origin</label><br>
+                                            <select name="country" id="country" class="form-select">
+                                                <option selected disabled>--Select--</option>
+                                                @foreach($countries as $country)
+                                                <option value="{{ $country->id }}">{{ $country->country_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="form3Example9">Description</label>
                                     <!-- <textarea id="summernote" name="editordata"></textarea> -->
@@ -96,7 +116,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline">
                                             <label class="form-label" for="form3Example1n1">Category Name</label><br>
-                                            <select name="category_id" id="category" class="p-1">
+                                            <select name="category_id" id="category" class="form-select">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($Categories as $cat)
                                                 <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
@@ -147,7 +167,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline">
                                             <label class="form-label" for="form3Example1n1">Sub Category Name</label><br>
-                                            <select name="subcategory_id" id="subcategory" class="p-1">
+                                            <select name="subcategory_id" id="subcategory" class="form-select">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($subCategory as $sub)
                                                 <option value="{{ $sub->id }}">{{ $sub->category_name }}</option>
@@ -161,7 +181,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline">
                                             <label class="form-label" for="form3Example1n1">Varitation Name</label><br>
-                                            <select name="variation_id" id="variation" class="p-1">
+                                            <select name="variation_id" id="variation" class="form-select">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($variation as $var)
                                                 <option value="{{ $var->id }}">{{ $var->name }}</option>
@@ -208,7 +228,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-outline">
                                             <label class="form-label" for="form3Example1n1">Variation Option Name</label><br>
-                                            <select name="variationOption" id="variationOption" class="p-1">
+                                            <select name="variationOption" id="variationOption" class="form-select">
                                                 <option selected disabled>--Select--</option>
                                                 @foreach($variationOption as $var)
                                                 <option value="{{ $var->id }}">{{ $var->value }}</option>

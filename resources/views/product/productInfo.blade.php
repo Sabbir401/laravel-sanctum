@@ -23,22 +23,12 @@
                             <th>Sub Category</th>
                             <th>Variation</th>
                             <th>Price</th>
+                            <th>Origin</th>
                             <th>Stock</th>
                             <th>picture</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>SKU</th>
-                            <th>Category</th>
-                            <th>Sub Category</th>
-                            <th>Variation</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>picture</th>
-                        </tr>
-                    </tfoot>
+
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
@@ -48,15 +38,35 @@
                             <td>{{ $product->category->category_name }}</td>
                             <td>{{ $product->productItems->productConfigur->variationOption->value }}</td>
                             <td>{{ $product->productItems->price }}</td>
+                            <td>{{ $product->country->country_name }}</td>
                             <td>{{ $product->productItems->qty_in_stock }}</td>
                             <td><img src="{{ $product->product_image_1 }}" alt="Image" height="70px" width="70px"></td>
 
                         </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>SKU</th>
+                            <th>Category</th>
+                            <th>Sub Category</th>
+                            <th>Variation</th>
+                            <th>Price</th>
+                            <th>Origin</th>
+                            <th>Stock</th>
+                            <th>picture</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
     </div>
 </main>
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
 @endsection

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("category_id");
             $table->string('name',30);
-            $table->string('Description',500);
+            $table->text('Description');
+            $table->integer('product_code');
+            $table->unsignedBigInteger('origin');
             $table->string('product_image_1',100)->nullable();
             $table->string('product_image_2',100)->nullable();
             $table->string('product_image_3',100)->nullable();
@@ -23,6 +25,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
+            $table->foreign('origin')->references('id')->on('countries')->onDelete('cascade');
         });
     }
 

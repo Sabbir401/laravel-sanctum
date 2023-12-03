@@ -11246,3 +11246,145 @@ body {
 #datatablesSimple td{
     vertical-align: middle;
 }
+
+/*products page*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+   font-family: 'Poppins', sans-serif
+}
+
+body {
+   background-color: #f4f4f4
+}
+
+
+.bt{
+   color: rgb(27, 91, 112);
+   font-weight: bold;
+   font-size: 14px;
+}
+
+.bt:hover{
+   color: #448E51;
+   box-shadow: 2px 2px 15px #448E51;
+   transform: scale(1.03);
+   /*fd9a6ce5*/
+}
+
+.ancor h2 {
+    color: #448E51;
+    font-weight: bold;
+}
+
+.ancor a:hover{
+   text-decoration: none;
+}
+
+
+#header {
+   width: 100%;
+   height: 60px;
+   box-shadow: 5px 5px 15px #e8e8e8
+}
+
+.product-card {
+   padding: 10px;
+   cursor: pointer;
+   transition: .3s all ease-in-out;
+   height: 350px;
+   border: 1px solid rgba(0, 0, 0, .125)
+}
+
+.product-card:hover {
+   box-shadow: 2px 2px 15px #448E51;
+   transform: scale(1.02);
+}
+
+.product-card-body{
+    color: black;
+}
+
+.product-card .product-name {
+    font-weight: 600;
+}
+
+.product-card-body {
+   padding-bottom: 0;
+   text-align: center;
+}
+
+.product-card .text-muted {
+   font-size: 0.82rem
+}
+
+.product-card-img img {
+   padding-top: 10px;
+   width: inherit;
+   height: 180px;
+   object-fit: contain;
+   display: block
+}
+
+@media(min-width:1199.6px) {
+   #filterbar {
+      width: 25%
+   }
+}
+
+@media(max-width:1199.5px) {
+   #filterbar {
+      width: 28%
+   }
+
+   .product-card {
+      height: 350px
+   }
+
+
+   .product-name {
+      font-size: 0.8rem
+   }
+}
+
+@media(max-width: 991.5px) {
+   .product-card {
+      height: 345px
+   }
+
+}
+
+@media(max-width: 767.5px) {
+   #filterbar {
+      width: 50%
+   }
+}
+
+@media(max-width: 525.5px) {
+   #filterbar {
+      float: none;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 5px
+   }
+
+   #content.my-5 {
+      margin-top: 20px !important;
+      margin-bottom: 20px !important
+   }
+
+   .col-lg-4,
+   .col-md-6 {
+      padding-left: 0
+   }
+}
+
+@media(max-width: 500.5px) {
+   .pagination {
+      display: none
+   }
+}
+

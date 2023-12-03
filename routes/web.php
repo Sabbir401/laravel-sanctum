@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('/product/productDetails');
+    return view('/product');
 });
 
 Route::resource("brand", BrandController::class);
@@ -41,6 +41,9 @@ Route::post('product', [ProductController::class, 'getSubCategory'])->name('getS
 Route::post('product/var', [ProductController::class, 'getvariation'])->name('getVariation');
 Route::post('product/submit', [ProductController::class, 'store'])->name('product.submit');
 Route::get('productAll', [ProductController::class, 'show']);
+Route::get('/products', [ProductController::class, 'display']);
+Route::get('/productdetails/{id}', [ProductController::class, 'details'])->name('product.details');
+Route::get('/productsingle/{id}', [ProductController::class, 'single'])->name('product.single');
 
 Route::get('product/category', [ProductCategoryController::class, 'show']);
 Route::post('product/category', [ProductCategoryController::class, 'store'])->name('categories.store');

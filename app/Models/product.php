@@ -12,6 +12,8 @@ class product extends Model
         'category_id',
         'name',
         'Description',
+        'product_code',
+        'origin',
         'product_image_1',
         'product_image_2',
         'product_image_3',
@@ -31,5 +33,11 @@ class product extends Model
     {
         return $this->belongsTo(product_category::class, 'parent_category_id');
     }
+
+    public function country()
+    {
+        return $this->belongsTo(country::class, 'origin');
+    }
+
 
 }
