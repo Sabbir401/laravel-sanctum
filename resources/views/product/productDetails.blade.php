@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -36,6 +36,11 @@
             cursor: pointer;
         }
 
+        .highlighted {
+            border: 2px solid red;
+            /* Change the border style for highlighting */
+        }
+
         #img-area {
             overflow: hidden;
         }
@@ -49,13 +54,11 @@
             font-size: 14px;
         }
 
-        .paragraph{
+        .paragraph {
             font-size: 14px;
             text-align: justify;
         }
     </style>
-
-
 </head>
 
 <body>
@@ -67,12 +70,12 @@
                 </div>
                 <div class="small-img-group">
                     <div class="small-img-col m-1">
-                        <img src="{{ asset($product->product_image_1) }}" width="100%" class="small-img border rounded" alt="">
+                        <img src="{{ asset($product->product_image_1) }}" width="100%" id="img-1" class="small-img border rounded" onclick="highlightImage(this)" alt="">
                     </div>
-                    <div class="small-img-col m-1">
-                        <img src="{{ asset($product->product_image_2) }}" width="100%" class="small-img border rounded" alt="">
+                    <div class=" small-img-col m-1">
+                        <img src="{{ asset($product->product_image_2) }}" width="100%" id="img-2" class="small-img border rounded" onclick="highlightImage(this)" alt="">
                     </div>
-                    <!-- <div class="small-img-col">
+                    <!-- <div class=" small-img-col">
                         <img src="{{ asset($product->product_image_3) }}" width="100%" class="small-img border rounded" alt="">
                     </div>
                     <div class="small-img-col">
@@ -115,20 +118,35 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-
-    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
     <script>
+        $(document).ready(function() {
+            $('#img-1').click(function() {
+                $('#MainImg').attr("src", "{{ asset($product->product_image_1) }}")
+            });
+            $('#img-2').click(function() {
+                $('#MainImg').attr("src", "{{ asset($product->product_image_2) }}")
+            });
+
+        });
+
+        function highlightImage(element) {
+            const carouselItems = document.querySelectorAll('.small-img');
+            carouselItems.forEach(item => item.classList.remove('highlighted'));
+
+            element.classList.add('highlighted');
+        }
+
         var ImgArea = document.getElementById('img-area');
         var MainImg = document.getElementById('MainImg');
-        var smallimg = document.getElementsByClassName('small-img');
 
         ImgArea.addEventListener('mousemove', (e) => {
             const x = e.clientX - e.target.offsetLeft;
@@ -144,21 +162,6 @@
             MainImg.style.transformOrigin = "center";
             MainImg.style.transform = "scale(1)"
         })
-
-
-
-        smallimg[0].onclick = function() {
-            MainImg.src = smallimg[0].src;
-        }
-        smallimg[1].onclick = function() {
-            MainImg.src = smallimg[1].src;
-        }
-        smallimg[2].onclick = function() {
-            MainImg.src = smallimg[2].src;
-        }
-        smallimg[3].onclick = function() {
-            MainImg.src = smallimg[3].src;
-        }
     </script>
 </body>
 

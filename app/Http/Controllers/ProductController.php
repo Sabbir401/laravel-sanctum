@@ -163,7 +163,7 @@ class ProductController extends Controller
         $product = product::with('category', 'category.parentCategory', 'country', 'productItems', 'productItems.productConfigur.variationOption', 'productItems.productConfigur.variationOption.variation')->find($id);
 
         if ($product) {
-            return view('product/test', compact('product'));
+            return view('product/productDetails', compact('product'));
         } else {
             return "Data Not Found";
         }
