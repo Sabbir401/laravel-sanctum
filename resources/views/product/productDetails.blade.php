@@ -60,8 +60,10 @@
         }
     </style>
 </head>
+@extends('frontend.layouts.main')
 
-<body>
+@section('main-container')
+<main>
     <div class="container">
         <div class="row mt-5">
             <div class="col-lg-4 col-md-12 col-sm-12 ml-3">
@@ -163,6 +165,6 @@
             MainImg.style.transform = "scale(1)"
         })
     </script>
-</body>
 
+@endsection
 </html>

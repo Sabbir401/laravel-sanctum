@@ -112,7 +112,7 @@ class SiteUserController extends Controller
     {
         $site_user = site_user::with('userAddress.address')->onlyTrashed()->get();
         $data = compact('site_user');
-        return view('/user/user')->with($data);
+        return view('/user/userTrash')->with($data);
     }
 
     /**
